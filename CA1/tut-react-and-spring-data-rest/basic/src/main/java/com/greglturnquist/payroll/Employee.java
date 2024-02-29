@@ -33,14 +33,19 @@ public class Employee {
 	private String lastName;
 	private String description;
 	private String jobTitle;
+	private int jobYears;
 
 	protected Employee() {}
 
-	public Employee(String firstName, String lastName, String description, String jobTitle) {
+	public Employee(String firstName, String lastName, String description, String jobTitle, int jobYears) throws InstantiationException {
+		if (firstName == null || firstName.isEmpty() || firstName.trim().isEmpty() || lastName == null || lastName.isEmpty() || jobTitle == null || jobTitle.isEmpty() || jobTitle.trim().isEmpty() || description == null || description.isEmpty() || description.trim().isEmpty() || jobYears < 0){
+			throw new InstantiationException("Invalid employee");
+		}
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
 		this.jobTitle = jobTitle;
+		this.jobYears = jobYears;
 	}
 
 	@Override
@@ -52,13 +57,14 @@ public class Employee {
 			Objects.equals(firstName, employee.firstName) &&
 			Objects.equals(lastName, employee.lastName) &&
 			Objects.equals(description, employee.description) &&
-			Objects.equals(jobTitle, employee.jobTitle);
+			Objects.equals(jobTitle, employee.jobTitle) &&
+			Objects.equals(jobYears, employee.jobYears);
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, firstName, lastName, description, jobTitle);
+		return Objects.hash(id, firstName, lastName, description, jobTitle, jobYears);
 	}
 
 	public Long getId() {
@@ -101,6 +107,14 @@ public class Employee {
 		this.jobTitle = jobTitle;
 	}
 
+	public int getJobYears() {
+		return jobYears;
+	}
+
+	public void setJobYears(int jobYears) {
+		this.jobYears = jobYears;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee{" +
@@ -109,6 +123,7 @@ public class Employee {
 			", lastName='" + lastName + '\'' +
 			", description='" + description + '\'' +
 			", jobTitle='" + jobTitle + '\'' +
+			", jobYears='" + jobYears + '\'' +
 			'}';
 	}
 }
