@@ -101,5 +101,17 @@ public class EmployeeTest {
         assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
     }
 
+    @Test
+    public void createInvalidEmployeeWithInvalidEmailField() {
+        String firstName = "Frodo";
+        String lastName = "Baggins";
+        String description = "Fellowship of the Ring";
+        String jobTitle = "Ring Bearer";
+        int jobYears = 2;
+        String emailField = "frodo_Baggins123gmail.com";
+
+        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
+    }
+
 
 }
