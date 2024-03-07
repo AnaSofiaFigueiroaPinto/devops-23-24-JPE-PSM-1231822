@@ -39,7 +39,7 @@ public class Employee {
 	protected Employee() {}
 
 	public Employee(String firstName, String lastName, String description, String jobTitle, int jobYears, String emailField) throws InstantiationException {
-		if (firstName == null || firstName.isEmpty() || firstName.trim().isEmpty() || lastName == null || lastName.isEmpty() || jobTitle == null || jobTitle.isEmpty() || jobTitle.trim().isEmpty() || description == null || description.isEmpty() || description.trim().isEmpty() || jobYears < 0 || emailField == null || emailField.isEmpty() || emailField.trim().isEmpty()){
+		if (firstName == null || firstName.isEmpty() || firstName.trim().isEmpty() || lastName == null || lastName.isEmpty() || jobTitle == null || jobTitle.isEmpty() || jobTitle.trim().isEmpty() || description == null || description.isEmpty() || description.trim().isEmpty() || jobYears < 0 || emailField == null || emailField.isEmpty() || emailField.trim().isEmpty() || !emailField.contains("@")){
 			throw new InstantiationException("Invalid employee");
 		}
 		this.firstName = firstName;
