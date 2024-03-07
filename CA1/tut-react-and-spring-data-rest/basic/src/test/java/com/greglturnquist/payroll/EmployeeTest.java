@@ -7,14 +7,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EmployeeTest {
 
     @Test
-    public void createValidEmployee() throws InstantiationException {
+    public void createValidEmployee() {
         String firstName = "Frodo";
         String lastName = "Baggins";
         String description = "Fellowship of the Ring";
         String jobTitle = "Ring Bearer";
         int jobYears = 0;
+        String emailField = "frodo_Baggins123@gmail.com";
 
-        assertDoesNotThrow(() -> new Employee(firstName, lastName, description, jobTitle, jobYears));
+        assertDoesNotThrow(() -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
     }
 
     @Test
@@ -24,7 +25,9 @@ public class EmployeeTest {
         String description = "Fellowship of the Ring";
         String jobTitle = "Ring Bearer";
         int jobYears = 2;
-        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears));
+        String emailField = "frodo_Baggins123@gmail.com";
+
+        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
     }
 
     @Test
@@ -34,7 +37,9 @@ public class EmployeeTest {
         String description = "Fellowship of the Ring";
         String jobTitle = "Ring Bearer";
         int jobYears = 2;
-        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears));
+        String emailField = "frodo_Baggins123@gmail.com";
+
+        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
     }
 
     @Test
@@ -44,7 +49,9 @@ public class EmployeeTest {
         String description = "";
         String jobTitle = "Ring Bearer";
         int jobYears = 3;
-        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears));
+        String emailField = "frodo_Baggins123@gmail.com";
+
+        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
     }
 
     @Test
@@ -54,7 +61,9 @@ public class EmployeeTest {
         String description = "Fellowship of the Ring";
         String jobTitle = null;
         int jobYears = 3;
-        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears));
+        String emailField = "frodo_Baggins123@gmail.com";
+
+        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
     }
 
     @Test
@@ -64,7 +73,32 @@ public class EmployeeTest {
         String description = "Fellowship of the Ring";
         String jobTitle = "Ring Bearer";
         int jobYears = -1;
-        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears));
+        String emailField = "frodo_Baggins123@gmail.com";
+
+        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
+    }
+    @Test
+    public void createInvalidEmployeeWithEmptyEmailField() {
+        String firstName = "Frodo";
+        String lastName = "Baggins";
+        String description = "Fellowship of the Ring";
+        String jobTitle = "Ring Bearer";
+        int jobYears = 2;
+        String emailField = "";
+
+        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
+    }
+
+    @Test
+    public void createInvalidEmployeeWithNullEmailField() {
+        String firstName = "Frodo";
+        String lastName = "Baggins";
+        String description = "Fellowship of the Ring";
+        String jobTitle = "Ring Bearer";
+        int jobYears = 2;
+        String emailField = null;
+
+        assertThrows(InstantiationException.class, () -> new Employee(firstName, lastName, description, jobTitle, jobYears, emailField));
     }
 
 
