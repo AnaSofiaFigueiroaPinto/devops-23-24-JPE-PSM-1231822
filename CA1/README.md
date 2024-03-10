@@ -455,7 +455,7 @@ git push origin main
 11. The tag v1.3.0 was pushed to the repository, using the same commands as before.
 
 
-The second requirement for this second week was to create a new branch (fix-invalid-email branch) and add a new feature to the application. The feature was to validate the previously introduced email. The commands used to do so were:
+#### The second requirement for this second week was to create a new branch (fix-invalid-email branch) and add a new feature to the application. The feature was to validate the previously introduced email. The commands used to do so were:
 1. To create the new branch:
 ```bash
 git branch fix-invalid-email
@@ -518,7 +518,85 @@ git push origin main
 9. In this last commit, the issue #18 was closed.
 10. Lastly, the tag ca1-part2 was pushed to the repository, using the same commands as before. Together with the commit of this tag, the issue #19 was also closed using the command used in the previous step.
 
-	
+## Alternative version using SVN
+
+The alternative version of this assignment was made using SVN. Here are the main differences:
+1. Git uses a distributed version control system (DVCS) where each user has a complete copy of the repository with its full history. Meanwhile, SVN has a centralized version control system (CVCS) with a central repository that users check out from and commit to.
+2. Regarding merging and branching, Git is known for its powerful branching and merging capabilities, which make it suitable for complex development workflows. SVN supports branching and merging, but the process is generally considered less flexible and more linear compared to Git.
+3. Also, Git is generally faster and more efficient, particularly when it comes to cloning repositories and handling branching and merging operations. SVN can be perceived as slower, especially with larger repositories and complex branching structures.
+4. Finally, Git commits are atomic and treated as a single, indivisible unit, all the while the SVN commits are not inherently atomic, but SVN provides a transactional commit process.	
+
+If the implementation was to use the SVN, the main commands used in the Git version would be replaced by the following:
+
+1. To create the new branch:
+```bash
+svn mkdir CA1
+svn copy original-repo-url/trunk CA1
+```
+2. To commit changes:
+```bash
+cd CA1
+
+svn add --force *
+svn commit -m "Initial commit: Tutorial React.js and Spring Data REST Application"
+```
+
+3. Tag Versions
+```bash
+svn copy trunk tags/v1.1.0
+svn commit -m "Tagging version 1.1.0"
+```
+4. Develop a new feature
+```bash
+svn switch ^/trunk
+# Make changes
+svn commit -m "Add jobYears field to Employee"
+svn copy trunk tags/v1.2.0
+svn commit -m "Tagging version 1.2.0"
+```
+5. Tag repository
+```bash
+svn copy trunk tags/ca1-part1
+svn commit -m "Tagging version ca1-part1"
+```
+For the second part of the assignment, the commands would be similar, but the branch would be created using the following command:
+1. To create the new branch:
+```bash
+svn copy file:///path/to/svn-repo/trunk file:///path/to/svn-repo/branches/email-field -m "Creating branch for email-field feature"
+svn switch ^/branches/email-field
+# Make changes
+svn commit -m "Add emailField field to Employee"
+```
+2. Merge into main and Tag:
+```bash
+svn switch ^/trunk
+svn merge ^/branches/email-field
+svn commit -m "Merge email-field branch into main"
+
+svn copy trunk tags/v1.3.0
+svn commit -m "Tagging version 1.3.0"
+```
+3. To create the new branch:
+```bash
+svn copy file:///path/to/svn-repo/trunk file:///path/to/svn-repo/branches/fix-invalid-email -m "Creating branch for fix-invalid-email feature"
+svn switch ^/branches/fix-invalid-email
+# Make changes
+svn commit -m "Add validation for emailField in Employee"
+```
+4. Merge into main and Tag:
+```bash
+svn switch ^/trunk
+svn merge ^/branches/fix-invalid-email
+svn commit -m "Merge fix-invalid-email branch into main"
+
+svn copy trunk tags/v1.3.1
+svn commit -m "Tagging version 1.3.1"
+```
+5. Tag repository
+```bash
+svn copy trunk tags/ca1-part2
+svn commit -m "Tagging version ca1-part2"
+```
 
 
 
