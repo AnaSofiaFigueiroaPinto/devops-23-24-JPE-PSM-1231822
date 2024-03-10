@@ -7,8 +7,16 @@ Further details can be found at [https://github.com/AnaSofiaFigueiroaPinto/devop
 
 ## First Week Of The CA1 - No Branches
 
+### To organize all the work properly, several issues were created in the GitHub repository
+To do so, the following steps were taken:
+1. In the main page of the repository, the "Issues" tab was clicked.
+2. Then, the "New issue" button was clicked.
+3. The title of the issue was added.
+4. Then, the "Submit new issue" button was clicked.
+5. The issue was created with an unique number, that should be used in the commit message that shows any editions related to the issue.
+
 In this first part of this assignment, the main goals were to create a new folder with a copy of the tutorial and then develop and test a new feature, while working on the main branch.
-### To organize all the work properly, several issues were created
+
 1. To respond to the first step, while in the folder for this repository, the command "mkdir CA1" was used. To copy the tutorial to the new folder, the command "cp -r --exclude=".git" " was used to copy everything from the provided tutorial  but the .git file.
 2. The tag v1.1.0 was added to the project, using the commands "git tag v1.1.0" and then "git push --tag". Had to make some adjustments with the folder placement, so the tag was placed in the last immediate last commit before starting to implement the code changes.
 3. Then, the java code provided in the class "Employee" was altered accordingly to add the feature of "jobYears" as well as its verification methods. Also, the DatabaseLoader and app.js classes were updated to reflect these changes once the application runs. Please check commit 68825a8 for further detail. To push all the updates to this repository, the commands "git add ." followed by "git commit -m "Descriptive message for each commit" " and lastly "git push origin main" were used.
