@@ -59,7 +59,7 @@ task runClient(type:JavaExec, dependsOn: classes){
     args 'localhost', '59001'
 }
 
-task runServer(type:JavaExec, dependsOn: classes){
+task runServer(type:JavaExec, dependsOn: classes) {
     group = "DevOps"
     description = "Launches a chat client that connects to a server on localhost:59001 "
 
@@ -68,4 +68,32 @@ task runServer(type:JavaExec, dependsOn: classes){
     mainClass = 'basic_demo.ChatServerApp'
 
     args '59001'
+}
+    task backupSources(type: Copy) {
+        group = 'Backup'
+        description = 'Make a backup of the application sources'
+
+        // Define the source directory
+        def sourceDir = file('src')
+
+        // Define the destination directory for the backup
+        def backupDir = file("${buildDir}/backup/src")
+
+        // Set the source and destination directories for the copy operation
+        from sourceDir
+        into backupDir
+}
+
+task zipSources(type: Zip) {
+    group = 'Archive'
+    description = 'Creates a zip archive of the application sources'
+
+    def sourceDir = file('src')
+
+    def zipFile = file("${buildDir}/archives/sources.zip")
+
+    from sourceDir
+
+    archiveFileName = zipFile.name
+    destinationDirectory = zipFile.parentFile
 }
