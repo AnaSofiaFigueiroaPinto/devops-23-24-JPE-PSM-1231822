@@ -2,7 +2,7 @@
 
 ## General Introduction
 The objective of Part 1 of the assignment is to obtain hands-on experience with Gradle. To achieve that, a simple example application was used. 
-This technical report outlines the steps involved to finalize this Part 1, including setting up the example application, performing various tasks using Gradle, adding unit tests, and creating backups and archives of the application sources.The purpose of this class assignment was to use personal repositories to introduce the build tools using gradle, all the while, keeping in mind the correct git commands to handle all of the requests in the git bash terminal.
+This technical report outlines the steps involved to finalize this Part 1, including setting up the example application, performing various tasks using Gradle, adding unit tests, and creating backups and archives of the application sources. The purpose of this class assignment was to use personal repositories to introduce the build tools using gradle, all the while, keeping in mind the correct git commands to handle all of the requests in the git bash terminal.
 Further details can be found at [https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822]. 
 
 ### To organize all the work properly, several issues were created in the GitHub repository
@@ -136,7 +136,6 @@ Started by creating a new folder:
     destinationDirectory = zipFile.parentFile
 }
    ```
-- Then, I compiled the project again:
 - Then, I compiled the project again:
 ```bash
    ./gradlew build
