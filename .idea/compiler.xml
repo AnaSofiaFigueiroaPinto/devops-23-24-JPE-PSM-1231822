@@ -11,6 +11,8 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="basic_demo" target="21" />
+      <module name="gradle_basic_demo.basic_demo.main~1" target="21" />
+      <module name="gradle_basic_demo.basic_demo.test~1" target="21" />
       <module name="react-and-spring-data-rest" target="1.8" />
       <module name="react-and-spring-data-rest-conditional" target="1.8" />
       <module name="react-and-spring-data-rest-events" target="1.8" />
