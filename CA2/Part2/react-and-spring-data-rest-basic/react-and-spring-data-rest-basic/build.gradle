@@ -34,3 +34,15 @@ frontend {
 	cleanScript = "run clean"
 	checkScript = "run check"
 	}
+
+task copyJarToDist(type: Copy) {
+	from 'build/libs/'
+	into "${project.rootDir}/dist"
+	include '*.jar'
+}
+
+task cleanWebpack(type: Delete) {
+	delete fileTree(dir: "${project.projectDir}/src/main/resources/static/built")
+}
+
+clean.dependsOn cleanWebpack
