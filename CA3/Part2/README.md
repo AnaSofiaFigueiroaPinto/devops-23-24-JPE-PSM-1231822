@@ -120,7 +120,7 @@ The main changes were:
       # sudo cp ./build/libs/basic-0.0.1-SNAPSHOT.war /var/lib/tomcat9/webapps
       nohup ./gradlew bootRun > /home/vagrant/spring-boot-app.log 2>&1 &
 ```
-Felt the need to change this last line since, for some reason, the command `sudo cp ./build/libs/basic-0.0.1-SNAPSHOT.war /var/lib/tomcat9/webapps` was not working properly.
+Felt the need to change this last line (`sudo cp ./build/libs/basic-0.0.1-SNAPSHOT.war /var/lib/tomcat9/webapps`) to have instead the command `nohup ./gradlew bootRun > /home/vagrant/spring-boot-app.log 2>&1 &` since I did not create an .war file, once the SpringBoot already works with Tomcat server that facilities this connection between databases (the file app.js in the CA2/Part2 has the correct path already determined).
 
 ### To complete the third task, the following steps were taken:
 1. Opened the terminal and navigated to the repository of this assignment:
@@ -144,8 +144,8 @@ PS C:\Users\Ana Sofia\Desktop\devops-23-24-JPE-PSM-1231822\CA3\Part2> vagrant de
 
 
 ## Alternative version - using VMware:
-To correctly run the alternative version, VMware requires to have the desktop version installed.
-The Vagrantfile was also configured to use VMware. The file was adjusted to this:
+To correctly run the alternative version, VMware requires to have the desktop version installed. Unfortunately, the VMware website was down to be able to install the hypervisor accordingly. Either way, I read about the virtual machine and created the following steps to run the VMs using VMware.
+The Vagrantfile was adjusted to this:
 ```ruby
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
@@ -225,7 +225,7 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-Then, the same steps used for the VirtualBox, were also used in the powershell to run the VMs using VMware.
+Then, the same steps used for the VirtualBox, would be also used in the powershell to run the VMs using VMware.
 
 ### Main difference between the VirtubalBox and VMware:
 
