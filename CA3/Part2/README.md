@@ -108,8 +108,8 @@ Vagrant.configure("2") do |config|
 end
 ```
 The main changes were:
-- using a different ubuntu version (used the focal64, instead of the bionic64);
-- added the installation of the openjdk-17-jdk-headless package;
+- using a different ubuntu version (used the focal64, instead of the bionic64), since focal is a more recent version, preventing incompatibility issues;
+- added the installation of the openjdk-17-jdk-headless package, once it is the jdk version that I normally use on the Class Assignments;
 - update the last lines as requested to the following:
 ```ruby
       git clone https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822.git
