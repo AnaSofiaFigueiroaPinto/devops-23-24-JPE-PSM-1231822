@@ -10,3 +10,7 @@ With this command, successfully made a docker build of the image, so if I check 
    ca4-part1                latest    ac853b19bba6   27 minutes ago   410MB
    jamj2000/oracle-xe-21c   latest    3697feff54f9   22 months ago    6.53GB 
 After that, I used the command: docker tag ac853b19bba6 anaspinto/ca4-part1:ca4-part1-version1 to tag the image. After that, I was able to send the image to the docker desktop by pushing it with the command: $ docker push anaspinto/ca4-part1:ca4-part1-version1
+
+
+Version 2 - o cleanBuild é utilizado visto que no CA2, Part1 o jdk utilizado foi o 21 e aqui utilizei o 17, logo tem cleanBuild tem que ocorrer, doutra forma, não sei necessário se o jdk fosse o mesmo.
+
