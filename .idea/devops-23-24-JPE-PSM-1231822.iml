@@ -5,6 +5,8 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/CA4/Part1/Version2/gradle_basic_demo/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CA4/Part1/Version2/gradle_basic_demo/src/test/java" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

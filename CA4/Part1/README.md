@@ -1,3 +1,17 @@
+# Techincal Report Of Class Assignment 3 Part 1
+
+## General Introduction
+The goal for this first part of this class assignment is to provide an introduction to virtualization. This first part of the assignment is to correctly setup a virtual machine, test if it is possible to run the CA1 and CA2 assignments on a VirtualBox virtual machine, all the while taking into consideration the needed dependencies and configurations. This technical report outlines the steps involved to finalize this Part 1.
+
+### To organize all the work properly, several issues were created in the GitHub repository
+To do so, the following steps were taken:
+1. In the main page of the repository, the "Issues" tab was clicked.
+2. Then, the "New issue" button was clicked.
+3. The title of the issue was added.
+4. Then, the "Submit new issue" button was clicked.
+5. The issue was created with a unique number, that should be used in the commit message that shows any editions related to the issue.
+
+
 To properly complete the first version of the part1 of this Class Assignment:
 1. Created a dockerfile that provides all the correct instructions to build the image.
 2. Then used the following command on the bash terminal: docker build -t ca4-part1 . (actually used the . )
