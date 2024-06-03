@@ -99,8 +99,28 @@ networks:
 ```bash
 docker-compose up
 ````
+4. To properly publish the images in Docker Hub and make them available to the Docker Desktop, the following steps were taken:
+- First, logged in to Docker Hub:
+```bash
+docker login
+````
+- Then, check the if of the images:
+```bash
+docker images
+````
+- Tagged the images:
+```bash
+docker tag <image_id> anaspinto/db
+docker tag <image_id> anasinto/web
+````
+- Pushed the images to Docker Hub:
+```bash
+docker push anaspinto/db
+docker push anaspinto/web
+````
+
 With this command, both images were created, as well as the containers, and the app was running.
-4. Then, when writing localhost:8080 on the browser, the app of the CA2 Part 2 was running, and the database was connected to the app.
+5. Then, when writing localhost:8080 on the browser, the app of the CA2 Part 2 was running, and the database was connected to the app.
 
 ## Conclusions
 Upon completion, the application was successfully deployed and accessible via localhost:8080, demonstrating seamless integration between the Spring Boot backend and the H2 database server running within Docker containers. This setup not only met the assignment requirements but also showcased the benefits of containerization for developing and deploying modern applications.
