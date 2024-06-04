@@ -1,7 +1,7 @@
 # Techincal Report Of Class Assignment 4 Part 2
 
 ## General Introduction
-The goal for this first part of this class assignment is to display the usage of containers. This first part is composed of two versions, where the first version is to create a Dockerfile that provides all the correct instructions to build the image, including cloning the needed repository, building the project, and running the application. The second version, however, the repository is cloned directly in this repository and not cloned by the docker itself. This technical report outlines the steps involved to finalize this Part 1.
+The goal for this second part of this class assignment is to display the usage of containers. This second part is focused on the creation of a Dockerfile for the database and another for the web application, and then use a docker-compose.yml file to run both dockerfiles in parallel. This technical report outlines the steps involved to finalize this Part 2.
 
 ### To organize all the work properly, several issues were created in the GitHub repository
 To do so, the following steps were taken:
@@ -12,115 +12,93 @@ To do so, the following steps were taken:
 5. The issue was created with a unique number, that should be used in the commit message that shows any editions related to the issue.
 
 ### To properly complete the second part of this Class Assignment:
-1. Created two dockerfiles, one for the database and another for the web application:
+1. Created two dockerfiles in the react-and-spring-data-rest-basic directory inside the CA2/Part2 directory, one for the database and another for the web application:
 ```dockerfile
 #Dockerfile for the database
-# Use Ubuntu as the base image
-FROM ubuntu
-
-# Install OpenJDK, unzip, and wget
-RUN apt-get update && \
-  apt-get install -y openjdk-17-jdk-headless unzip wget
-
-# Create and set the working directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-# Download H2 Database and place it in /opt
-RUN wget https://repo1.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar -O /opt/h2.jar
-
-# Expose the necessary ports
-EXPOSE 8082 9092
-
-# Start the H2 Server
-CMD ["java", "-cp", "/opt/h2.jar", "org.h2.tools.Server", "-web", "-webAllowOthers", "-tcp", "-tcpAllowOthers", "-ifNotExists"]
+FROM gradle:jdk21
+WORKDIR /opt/h2
+RUN wget https://repo1.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar -O h2.jar
+EXPOSE 8082
+EXPOSE 9092
+CMD ["java", "-cp", "h2.jar", "org.h2.tools.Server", "-ifNotExists", "-web", "-webAllowOthers", "-webPort", "8082", "-tcp", "-tcpAllowOthers", "-tcpPort", "9092"]
 ````
 
 ```dockerfile
 #Dockerfile for the web application
-FROM openjdk:17-jdk-slim
-
-# Install additional utilities
-RUN apt-get update -y && apt-get install -y git unzip
-
-# Create and set the working directory
-RUN mkdir -p /app
+FROM gradle:jdk21
 WORKDIR /app
-
-# Clone the private repository to the container
-RUN git clone https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822.git
-
-# Set the working directory to the Spring Boot application directory
-WORKDIR /app/devops-23-24-JPE-PSM-1231822/CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic
-
-# Ensure the gradlew script is executable and build the application
-RUN chmod +x ./gradlew && ./gradlew clean build
-
-# Configure the container to run as an executable
-ENTRYPOINT ["./gradlew"]
-CMD ["bootRun"]
+COPY . /app
+EXPOSE 8080
+CMD ["java", "-jar", "build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.jar"]
 ````
-2. Then created a docker-compose.yml file to run both dockerfiles in parallel:
+2. Then, on the same directory, created a docker-compose.yml file to run both dockerfiles in parallel:
 ```yaml
 services:
   db:
     build:
       context: .
       dockerfile: Dockerfile-db
+    container_name: h2-db
     ports:
       - "8082:8082"
       - "9092:9092"
     volumes:
-      - ./data:/usr/src/data-backup
-    networks:
-      default:
-        ipv4_address: 192.168.33.11
+      - h2-data:/opt/h2-data
+      - db-backup:/backup
 
   web:
     build:
       context: .
       dockerfile: Dockerfile-web
+    container_name: spring-web
     ports:
       - "8080:8080"
-    networks:
-      default:
-        ipv4_address: 192.168.33.10
     depends_on:
-      - "db"
+      - db
 
-networks:
-  default:
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.33.0/24
+volumes:
+  h2-data:
+    driver: local
+  db-backup:
+    driver: local
 ````
-3. To create the image of the docker, used the command:
+These steps were made inside the CA2/Part2 directory, to avoid any irregularities to run the requested app.
+3. Then, used the following command on the bash terminal:
 ```bash
 docker-compose up
 ````
-4. To properly publish the images in Docker Hub and make them available to the Docker Desktop, the following steps were taken:
-- First, logged in to Docker Hub:
-```bash
-docker login
-````
-- Then, check the if of the images:
-```bash
-docker images
-````
-- Tagged the images:
-```bash
-docker tag <image_id> anaspinto/db
-docker tag <image_id> anasinto/web
-````
-- Pushed the images to Docker Hub:
-```bash
-docker push anaspinto/db
-docker push anaspinto/web
-````
 
 With this command, both images were created, as well as the containers, and the app was running.
-5. Then, when writing localhost:8080 on the browser, the app of the CA2 Part 2 was running, and the database was connected to the app.
+4. Then, when writing localhost:8080 on the browser, the app of the CA2 Part 2 was running, and the database was connected to the app.
+
+5. To correctly make a backup of the database, the following command was used:
+```bash
+docker exec -it h2-db /bin/sh -c 'cp /opt/h2-data/h2.mv.db /backup/h2.mv.db'
+````
+
+If a copy of the database in the local machine, the following command should be used:
+```bash
+docker cp 0c243d226fc2:/opt/h2/jpadb.mv.db .
+````
+Being the "0c243d226fc2" the container ID, obtained by using the command "docker ps".
+
+6. Publish the newly produced Docker images:
+```bash
+docker tag a63a17545577 anaspinto/ca2-part2:ca4-part2-db
+docker tag 6753b5aad367 anaspinto/ca2-part2:ca4-part2-web
+````
+Followed by the command:
+```bash
+docker push anaspinto/ca2-part2:ca4-part2-db
+docker push anaspinto/ca2-part2:ca4-part2-web
+````
+7. To verify the created images, you can visit the Docker Hub in the following address: https://hub.docker.com/u/anaspinto
+
+## Comparison between the use of Docker vs the use of Kubernetes
+Docker is a platform for developing, shipping, and running applications in containers. It simplifies the creation and management of containerized applications.
+Kubernetes is an open-source platform for automating deployment, scaling, and operations of application containers across clusters of hosts. It is designed to manage containerized applications in a clustered environment.
+They are essentially complementary technologies, with Docker providing the containerization technology and Kubernetes providing the orchestration and management of those containers, meaning Docker provides the foundation for containerization, while Kubernetes builds on that foundation to manage containers at scale. In many real-world scenarios, both are used together.
+
 
 ## Conclusions
 Upon completion, the application was successfully deployed and accessible via localhost:8080, demonstrating seamless integration between the Spring Boot backend and the H2 database server running within Docker containers. This setup not only met the assignment requirements but also showcased the benefits of containerization for developing and deploying modern applications.
