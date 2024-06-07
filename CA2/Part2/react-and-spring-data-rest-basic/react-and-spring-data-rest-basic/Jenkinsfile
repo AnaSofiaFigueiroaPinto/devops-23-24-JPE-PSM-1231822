@@ -10,15 +10,17 @@ pipeline {
 
         stage('Assemble') {
             steps {
-                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic')
-                sh './gradlew assemble'
+                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                    sh './gradlew assemble'
+                }
             }
         }
 
         stage('Test') {
             steps {
-            dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic')
-                sh './gradlew test'
+                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                    sh './gradlew test'
+                }
             }
             post {
                 always {
@@ -29,15 +31,13 @@ pipeline {
 
         stage('Javadoc') {
             steps {
-                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic')
-                sh './gradlew javadoc'
+                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                    sh './gradlew javadoc'
+                }
             }
             post {
                 always {
                     publishHTML(target: [
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: false,
-                        keepAll: true,
                         reportDir: 'build/docs/javadoc',
                         reportFiles: 'index.html',
                         reportName: 'Javadoc'
@@ -48,18 +48,8 @@ pipeline {
 
         stage('Archive') {
             steps {
-            dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic')
-                archiveArtifacts artifacts: 'build/libs/*.war', fingerprint: true
-            }
-        }
-
-        stage('Publish Image') {
-            steps {
-                script {
-                    dockerImage = docker.build("my-docker-image:${env.BUILD_NUMBER}")
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        dockerImage.push()
-                    }
+                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                    archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
                 }
             }
         }
