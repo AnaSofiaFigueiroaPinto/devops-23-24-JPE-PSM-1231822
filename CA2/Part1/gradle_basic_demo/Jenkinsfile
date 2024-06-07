@@ -2,37 +2,38 @@ pipeline {
     agent any
 
     stages {
+    //What repository to checkout
         stage('Checkout') {
             steps {
-                checkout scm
-            }
-        }
-        stage('Assemble') {
-            steps {
-                script {
-                    sh 'pwd'
-                    sh 'ls -la'
-                    sh 'chmod +x ./gradlew'
-                    sh './gradlew assemble'
-                }
-            }
-            post {
-                success {
-                    archiveArtifacts artifacts: 'build/libs/*.jar', allowEmptyArchive: true
+                git branch: 'main', url: 'https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822.git'
+                dir('CA2/Part1/gradle_basic_demo') {
                 }
             }
         }
+        //Redudant stage as tests are already run in the build stage
         stage('Test') {
             steps {
-                script {
-                    sh '../../gradlew test'
+                dir('CA2/Part1/gradle_basic_demo') {
+                //Change gradlew permissions
+                    sh 'chmod +x gradlew'
+                    sh './gradlew test'
                 }
-                junit 'build/test-results/test/*.xml'
+            }
+        }
+        //Create a build stage to compile project
+        stage('Build') {
+            steps {
+                dir('CA2/Part1/gradle_basic_demo') {
+                    //Run gradlew clean build task
+                    sh './gradlew clean build'
+                }
             }
         }
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'build/libs/*.jar', allowEmptyArchive: true
+                dir('CA2/Part1/gradle_basic_demo') {
+                    archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+                }
             }
         }
     }
