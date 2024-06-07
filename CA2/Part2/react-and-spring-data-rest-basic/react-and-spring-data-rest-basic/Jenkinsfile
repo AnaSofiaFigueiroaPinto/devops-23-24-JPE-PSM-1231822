@@ -11,6 +11,7 @@ pipeline {
         stage('Assemble') {
             steps {
                 dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                    sh 'chmod +x gradlew'
                     sh './gradlew assemble'
                 }
             }
