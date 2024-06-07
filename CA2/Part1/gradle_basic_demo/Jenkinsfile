@@ -10,8 +10,10 @@ pipeline {
         stage('Assemble') {
             steps {
                 script {
-                    sh 'chmod +x ../../gradlew'
-                    sh '../../gradlew assemble'
+                    sh 'pwd'
+                    sh 'ls -la'
+                    sh 'chmod +x ./gradlew'
+                    sh './gradlew assemble'
                 }
             }
             post {
