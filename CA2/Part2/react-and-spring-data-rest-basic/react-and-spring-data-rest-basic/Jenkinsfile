@@ -3,10 +3,12 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+                    steps {
+                        git branch: 'main', url: 'https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822.git'
+                        dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                        }
+                    }
+                }
 
         stage('Assemble') {
             steps {
@@ -21,12 +23,9 @@ pipeline {
             steps {
                 dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
                     sh './gradlew test'
-                }
-            }
-            post {
-                always {
                     junit 'build/test-results/test/*.xml'
                 }
+            }
             }
         }
 
