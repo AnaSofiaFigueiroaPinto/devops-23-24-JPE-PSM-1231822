@@ -10,22 +10,19 @@ pipeline {
                 }
             }
         }
-        //Redudant stage as tests are already run in the build stage
-        stage('Test') {
+        stage('Assemble') {
             steps {
                 dir('CA2/Part1/gradle_basic_demo') {
-                //Change gradlew permissions
                     sh 'chmod +x gradlew'
-                    sh './gradlew test'
+                    sh './gradlew assemble'
                 }
             }
         }
-        //Create a build stage to compile project
-        stage('Build') {
+        stage('Test') {
             steps {
                 dir('CA2/Part1/gradle_basic_demo') {
-                    //Run gradlew clean build task
-                    sh './gradlew clean build'
+                    sh './gradlew test'
+                    junit 'build/test-results/test/*.xml'
                 }
             }
         }
