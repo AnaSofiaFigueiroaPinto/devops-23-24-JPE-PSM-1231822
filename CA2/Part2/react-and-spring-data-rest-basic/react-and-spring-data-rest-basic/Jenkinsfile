@@ -1,46 +1,71 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_CREDENTIALS_ID = 'anaspinto'
+        DOCKER_IMAGE = "anaspinto/ca5part2:${env.BUILD_ID}"
+    }
+
     stages {
         stage('Checkout') {
-                    steps {
-                        git branch: 'main', url: 'https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822.git'
-                        dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
-                        }
-                    }
+            steps {
+                script {
+                    // Check out the repository
+                    checkout([$class: 'GitSCM',
+                              branches: [[name: 'main']],
+                              userRemoteConfigs: [[url: 'https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822.git']]])
                 }
+            }
+        }
 
         stage('Assemble') {
             steps {
-                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
-                    sh 'chmod +x gradlew'
-                    sh './gradlew assemble'
+                script {
+                    // Navigate to the project directory and run Gradle assemble
+                    dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                        sh 'chmod +x ./gradlew'
+                        sh './gradlew clean assemble'
+                    }
                 }
             }
         }
 
         stage('Test') {
             steps {
-                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
-                    sh './gradlew test'
-                    junit 'build/test-results/test/*.xml'
+                script {
+                    // Navigate to the project directory and run Gradle test
+                    dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                        sh './gradlew test'
+                    }
                 }
             }
+            post {
+                always {
+                    // Archive test results
+                    junit 'CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic/build/test-results/test/*.xml'
+                }
             }
         }
 
         stage('Javadoc') {
             steps {
-                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
-                    sh './gradlew javadoc'
+                script {
+                    // Navigate to the project directory and generate Javadoc
+                    dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                        sh './gradlew javadoc'
+                    }
                 }
             }
             post {
                 always {
+                    // Publish Javadoc
                     publishHTML(target: [
-                        reportDir: 'build/docs/javadoc',
-                        reportFiles: 'index.html',
-                        reportName: 'Javadoc'
+                            allowMissing         : false,
+                            alwaysLinkToLastBuild: false,
+                            keepAll              : true,
+                            reportDir            : 'CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic/build/docs/javadoc',
+                            reportFiles          : 'index.html',
+                            reportName           : 'Javadoc'
                     ])
                 }
             }
@@ -48,10 +73,47 @@ pipeline {
 
         stage('Archive') {
             steps {
-                dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
-                    archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+                script {
+                    // Archive the built WAR file
+                    archiveArtifacts artifacts: 'CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic/build/libs/*.war', fingerprint: true
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image
+                    dir('CA2/Part2/react-and-spring-data-rest-basic/react-and-spring-data-rest-basic') {
+                        // Copy WAR file to Docker build context
+                        sh 'cp build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.war .'
+
+                        // Dynamically generate Dockerfile
+                        def dockerfileContent = """
+                            FROM tomcat:10.0.20-jdk17-temurin
+
+                            COPY *.war /usr/local/tomcat/webapps/
+                        """
+                        writeFile file: 'Dockerfile', text: dockerfileContent
+
+                        // Build Docker image
+                        docker.build("${DOCKER_IMAGE}")
+                    }
                 }
             }
         }
     }
+
+    post {
+        always {
+            echo 'This will always run'
+        }
+        success {
+            echo 'This will run only if successful'
+        }
+        failure {
+            echo 'This will run only if failed'
+        }
+    }
 }
+
