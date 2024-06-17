@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'anaspinto'
+        DOCKER_CREDENTIALS_ID = 'DHCred'
         DOCKER_IMAGE = "anaspinto/ca5part2:${env.BUILD_ID}"
     }
 
@@ -88,32 +88,35 @@ pipeline {
                         // Copy WAR file to Docker build context
                         sh 'cp build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.war .'
 
-                        // Dynamically generate Dockerfile
+                        // Dynamically generate Dockerfile       // To make the App functional by connecting to the database the ENV line was added
+
                         def dockerfileContent = """
                             FROM tomcat:10.0.20-jdk17-temurin
 
                             COPY *.war /usr/local/tomcat/webapps/
+                            ENV SPRING_DATASOURCE_URL=jdbc:h2:mem:jpadb
                         """
                         writeFile file: 'Dockerfile', text: dockerfileContent
 
                         // Build Docker image
+                        script {
                         docker.build("${DOCKER_IMAGE}")
+                        }
+                    }
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                echo 'Pushing Docker image to Docker Hub...'
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                        docker.image("${DOCKER_IMAGE}").push()
                     }
                 }
             }
         }
     }
 
-    post {
-        always {
-            echo 'This will always run'
-        }
-        success {
-            echo 'This will run only if successful'
-        }
-        failure {
-            echo 'This will run only if failed'
-        }
-    }
 }
 
