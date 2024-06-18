@@ -5,5 +5,6 @@
 3. [Class Assignment 2 - build tools](https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822/tree/main/CA2)
 4. [Class Assignment 3 - virtualization](https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822/tree/main/CA3)
 5. [Class Assignment 4 - containers](https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822/tree/main/CA4)
-6. All of the class assignments are organized in several directories, one for each class assignment.
-7. As the work progresses this README.md file will continue to be updated, depending of the several subjects that will take place during classes.
+6. [Class Assignment 5 - CI/CD using Jenkins](https://github.com/AnaSofiaFigueiroaPinto/devops-23-24-JPE-PSM-1231822/tree/main/CA5)
+7. All of the class assignments are organized in several directories, one for each class assignment.
+8. As the work progresses this README.md file will continue to be updated, depending of the several subjects that will take place during classes.
